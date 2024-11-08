@@ -9,11 +9,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
-    private List<Category> categories = new ArrayList<Category>();
+    private final List<Category> categories = new ArrayList<>();
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -26,6 +25,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public String createCategory(Category category) {
         categoryRepository.save(category);
+        System.out.println("hello");
         return "Categories added";
     }
 
