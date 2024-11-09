@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    environment {
+            JAVA_HOME = '/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home'
+            PATH = "${JAVA_HOME}/bin:${env.PATH}"
+            // PATH=$JAVA_HOME/bin:$PATH
+        }
     stages {
         stage('Build') {
             steps {
