@@ -30,15 +30,15 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.createCategory(category));
     }
 
-    @PutMapping("/api/public/categories/{categoryId}")
-    public ResponseEntity<String> updateCategory(@Valid @RequestBody Category category, @PathVariable Long categoryId){
-        try{
-           Category savedCategory = categoryService.updateCategory(category,categoryId);
-            return new ResponseEntity<>("Found", HttpStatus.OK);
-        } catch (ResponseStatusException e) {
-            return new ResponseEntity<>(e.getReason(), HttpStatus.NOT_FOUND);
-    }
-    }
+//    @PutMapping("/api/public/categories/{categoryId}")
+//    public ResponseEntity<String> updateCategory(@Valid @RequestBody Category category, @PathVariable Long categoryId){
+//        try{
+//           Category savedCategory = categoryService.updateCategory(category,categoryId);
+//            return new ResponseEntity<>("Found", HttpStatus.OK);
+//        } catch (ResponseStatusException e) {
+//            return new ResponseEntity<>(e.getReason(), HttpStatus.NOT_FOUND);
+//    }
+//    }
 
 
 

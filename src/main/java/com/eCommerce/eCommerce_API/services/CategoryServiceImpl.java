@@ -36,12 +36,13 @@ public class CategoryServiceImpl implements CategoryService{
         return "Category deleted successfully : " + categoryId;
     }
 
-    @Override
-    public Category updateCategory(Category category, Long categoryId) {
-        Category categoryLatest = categoryRepository.findById(categoryId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, categoryId + "not found"));
-
-        category.setCategoryId(categoryId);
-        categoryLatest = categoryRepository.save(category);
-return categoryLatest;
-    }
+//    @Override
+//    public Category updateCategory(Category category, Long categoryId) {
+//        Category categoryLatest;
+//        categoryLatest = categoryRepository.findById(categoryId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, categoryId + "not found"));
+//
+//        category.setCategoryId(categoryId);
+//        categoryLatest = categoryRepository.save(category);
+//return categoryLatest;
+//    }
 }
