@@ -36,7 +36,8 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-sh "mvn spring-boot:build-image -Dspring-boot.build-image.imageName=${IMAGE_NAME}:${IMAGE_TAG} --no-cache"
+                    sh "docker rmi saai11/ecommerce:latest || true"
+                    sh "mvn spring-boot:build-image -Dspring-boot.build-image.imageName=${IMAGE_NAME}:${IMAGE_TAG} --no-cache"
                 }
             }
         }
