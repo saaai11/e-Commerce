@@ -5,7 +5,7 @@ pipeline {
         PATH = "/usr/local/bin:${MAVEN_HOME}/bin:${env.PATH}"
         IMAGE_NAME = 'saai11/ecommerce' // Change this if needed
         IMAGE_TAG = 'latest' // Or use your preferred tag
-        CONTAINER_NAME = 'ecommerce_container1'
+        CONTAINER_NAME = 'ecommerce_container'
         PORT = '8074' // Adjust port if needed
     }
     stages {
@@ -56,7 +56,7 @@ pipeline {
         always {
             // Clean up: stop and remove the container after the build
             script {
-                sh "docker ps -q -f name=${CONTAINER_NAME} | xargs -r docker stop | xargs -r docker rm"
+sh "docker ps -aq -f name=${CONTAINER_NAME} | xargs -r docker stop | xargs -r docker rm"
             }
         }
     }
