@@ -6,7 +6,7 @@ pipeline {
         IMAGE_NAME = 'saai11/ecommerce' // Change this if needed
         IMAGE_TAG = 'latest' // Or use your preferred tag
         CONTAINER_NAME = 'ecommerce_container'
-        PORT = '8073' // Adjust port if needed
+        PORT = '8074' // Adjust port if needed
     }
     stages {
         stage('Build') {
@@ -47,7 +47,7 @@ pipeline {
                     sh "docker ps -q -f name=${CONTAINER_NAME} | xargs -r docker stop | xargs -r docker rm"
 
                     // Run the Docker container
-                    sh "docker run -d --name ${CONTAINER_NAME} -p ${PORT}:${PORT} ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker run -d --platform linux/amd64 --name ${CONTAINER_NAME} -p ${PORT}:${PORT} ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
