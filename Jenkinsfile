@@ -36,7 +36,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "mvn spring-boot:build-image -Dspring-boot.build-image.imageName=${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
