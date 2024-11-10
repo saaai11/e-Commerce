@@ -5,7 +5,7 @@ pipeline {
         PATH = "/usr/local/bin:${MAVEN_HOME}/bin:${env.PATH}"
         IMAGE_NAME = 'saai11/ecommerce' // Change this if needed
         IMAGE_TAG = 'latest' // Or use your preferred tag
-        CONTAINER_NAME = 'ecommerce_container'
+        CONTAINER_NAME = 'ecommerce_container1'
         PORT = '8074' // Adjust port if needed
     }
     stages {
