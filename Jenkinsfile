@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         MAVEN_HOME = '/opt/homebrew/opt/maven/libexec'
-        PATH = "${MAVEN_HOME}/bin:${env.PATH}"
+        PATH = "/usr/local/bin:${MAVEN_HOME}/bin:${env.PATH}"
         IMAGE_NAME = 'saai11/ecommerce' // Change this if needed
         IMAGE_TAG = 'latest' // Or use your preferred tag
         CONTAINER_NAME = 'ecommerce_container'

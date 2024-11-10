@@ -25,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public String createCategory(Category category) {
         categoryRepository.save(category);
-        System.out.println("hell0");
+        System.out.println("hell01");
         return "Categories added";
     }
 
