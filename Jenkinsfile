@@ -81,24 +81,23 @@ pipeline {
                         "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}"
                     ]) {
                         // SSH into EC2 instance and deploy the Docker container
-                        sh """
-                            ssh -o StrictHostKeyChecking=no -i /Users/sai/Downloads/ecommerce.pem ec2-user@18.234.173.171 << 'EOF'
-                                echo "Pulling latest Docker image from ECR..."
+                     sh '''#!/bin/bash
+                     echo "Logging into AWS ECR..."
+                     aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce
+                     '''
+                        sh '''
+                                                echo "Stopping and removing existing container..."
+                                                docker stop ecommerce || true
+                                                docker rm ecommerce || true
+                                            '''
 
-                                aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 180294204151.dkr.ecr.eu-north-1.amazonaws.com
+                                            // Run a new container from the latest image
+                                            sh '''
+                                                echo "Running new container..."
+                                                docker run -d -p 8073:8073 --name ecommerce 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
+                                                echo "Deployment completed!"
+                                            '''
 
-                                docker pull 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
-
-                                echo "Stopping and removing any existing container..."
-                                docker stop ecommerce || true
-                                docker rm ecommerce || true
-
-                                echo "Running new container..."
-                                docker run -d --name ecommerce -p 8073:8073 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
-
-                                echo "Deployment completed!"
-                            EOF
-                        """
                     }
                 }
             }
