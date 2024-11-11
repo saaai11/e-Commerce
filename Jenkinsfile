@@ -41,17 +41,44 @@ pipeline {
                 }
             }
         }
-        stage('Deploy Docker Image') {
+        stage('Push to ECR') {
             steps {
                 script {
-                    // Stop and remove any running containers with the same name
-                    sh "docker ps -q -f name=${CONTAINER_NAME} | xargs -r docker stop | xargs -r docker rm"
+                    withEnv([
+                        'AWS_REGION=${env.AWS_REGION}',
+                        'AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}',
+                        'AWS_SECRET_ACCESS_KEY=${7/1N6ORMHOGMnTDSApv7xm9eOUQsZ+5hILmps5VO}'
+                    ]) {
+                        // Retrieve ECR login token and authenticate Docker client
+                        sh '''
+                            aws ecr get-login-password --region $AWS_REGION | \
+                            docker login --username AWS --password-stdin 180294204151.dkr.ecr.eu-north-1.amazonaws.com
+                        '''
 
-                    // Run the Docker container
-                    sh "docker run -d --platform linux/amd64 --name ${CONTAINER_NAME} -p ${PORT}:${PORT} ${IMAGE_NAME}:${IMAGE_TAG}"
+                        // Tag the Docker image for ECR
+                        sh '''
+                            docker tag saai11/ecommerce:latest 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
+                        '''
+
+                        // Push the tagged image to ECR
+                        sh '''
+                            docker push 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
+                        '''
+                    }
                 }
             }
         }
+//         stage('Deploy Docker Image') {
+//             steps {
+//                 script {
+//                     // Stop and remove any running containers with the same name
+//                     sh "docker ps -q -f name=${CONTAINER_NAME} | xargs -r docker stop | xargs -r docker rm"
+//
+//                     // Run the Docker container
+//                     sh "docker run -d --platform linux/amd64 --name ${CONTAINER_NAME} -p ${PORT}:${PORT} ${IMAGE_NAME}:${IMAGE_TAG}"
+//                 }
+//             }
+//         }
     }
     post {
         always {
