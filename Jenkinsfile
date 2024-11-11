@@ -44,27 +44,28 @@ pipeline {
         stage('Push to ECR') {
             steps {
                 script {
-                    withEnv([
-                        'AWS_REGION=${env.AWS_REGION}',
-                        'AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}',
-                        'AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}'
-                    ]) {
-                        // Retrieve ECR login token and authenticate Docker client
-                        sh '''
-                            aws ecr get-login-password --region $AWS_REGION | \
-                            docker login --username AWS --password-stdin 180294204151.dkr.ecr.eu-north-1.amazonaws.com
-                        '''
+                    script {
+                        withEnv([
+                            "AWS_REGION=${env.AWS_REGION}",
+                            "AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}",
+                            "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}"
+                        ]) {
+                            // Use double quotes and `$` syntax for shell environment variable expansion
+                            sh """
+                                aws ecr get-login-password --region $AWS_REGION | \
+                                docker login --username AWS --password-stdin 180294204151.dkr.ecr.eu-north-1.amazonaws.com
+                            """
 
-                        // Tag the Docker image for ECR
-                        sh '''
-                            docker tag saai11/ecommerce:latest 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
-                        '''
+                            sh """
+                                docker tag saai11/ecommerce:latest 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
+                            """
 
-                        // Push the tagged image to ECR
-                        sh '''
-                            docker push 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
-                        '''
+                            sh """
+                                docker push 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
+                            """
+                        }
                     }
+
                 }
             }
         }
