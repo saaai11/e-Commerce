@@ -7,6 +7,9 @@ pipeline {
         IMAGE_TAG = 'latest' // Or use your preferred tag
         CONTAINER_NAME = 'ecommerce_container'
         PORT = '8074' // Adjust port if needed
+        VERSION = "v1.0.0" // Current release version
+
+
     }
     stages {
         stage('Build') {
