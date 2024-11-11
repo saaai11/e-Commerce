@@ -47,7 +47,7 @@ pipeline {
                     withEnv([
                         'AWS_REGION=${env.AWS_REGION}',
                         'AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}',
-                        'AWS_SECRET_ACCESS_KEY=${7/1N6ORMHOGMnTDSApv7xm9eOUQsZ+5hILmps5VO}'
+                        'AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}'
                     ]) {
                         // Retrieve ECR login token and authenticate Docker client
                         sh '''
