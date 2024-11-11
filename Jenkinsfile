@@ -6,7 +6,7 @@ pipeline {
         IMAGE_NAME = 'saai11/ecommerce' // Change this if needed
         IMAGE_TAG = 'latest' // Or use your preferred tag
         CONTAINER_NAME = 'ecommerce_container'
-        PORT = '8074' // Adjust port if needed
+        PORT = '8073' // Adjust port if needed
         VERSION = "v1.0.0" // Current release version
 
 
@@ -72,6 +72,38 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    withEnv([
+                        "AWS_REGION=${env.AWS_REGION}",
+                        "AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}",
+                        "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}"
+                    ]) {
+                        // SSH into EC2 instance and deploy the Docker container
+                        sh """
+                            ssh -o StrictHostKeyChecking=no -i /Users/sai/Downloads/ecommerce.pem ec2-user@18.234.173.171 << 'EOF'
+                                echo "Pulling latest Docker image from ECR..."
+
+                                aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 180294204151.dkr.ecr.eu-north-1.amazonaws.com
+
+                                docker pull 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
+
+                                echo "Stopping and removing any existing container..."
+                                docker stop ecommerce || true
+                                docker rm ecommerce || true
+
+                                echo "Running new container..."
+                                docker run -d --name ecommerce -p 8073:8073 180294204151.dkr.ecr.eu-north-1.amazonaws.com/ecommerce:latest
+
+                                echo "Deployment completed!"
+                            EOF
+                        """
+                    }
+                }
+            }
+        }
+
 //         stage('Deploy Docker Image') {
 //             steps {
 //                 script {
