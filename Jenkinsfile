@@ -55,8 +55,8 @@ pipeline {
                         ]) {
                             // Use double quotes and `$` syntax for shell environment variable expansion
                             sh """
-                                aws ecr get-login-password --region $AWS_REGION | \
-                                docker login --username AWS --password-stdin 180294204151.dkr.ecr.eu-north-1.amazonaws.com
+                               aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 180294204151.dkr.ecr.eu-north-1.amazonaws.com --no-include-email
+
                             """
 
                             sh """
